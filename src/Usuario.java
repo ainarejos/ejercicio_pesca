@@ -1,3 +1,7 @@
 public class Usuario {
-    private String Nombre;
+    private String nombre;
+
+    public Usuario(String nombre){
+        this.nombre=nombre;
+    }
 }
