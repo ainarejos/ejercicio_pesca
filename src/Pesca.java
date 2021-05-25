@@ -12,7 +12,7 @@ public class Pesca {
     }
 
     public void write(String string) throws IOException {
-        read = new FileReader("C:\\Users\\alumne-DAM\\Desktop\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
         int valor = read.read();
         String documento="";
         while (valor!=-1){
@@ -23,7 +23,7 @@ public class Pesca {
         if (this.comprobarUsuario(string)){
             System.out.println("\nUsuario ya registrado");
         } else {
-            writter = new FileWriter("C:\\Users\\alumne-DAM\\Desktop\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+            writter = new FileWriter("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
             writter.write(documento + "\n#" + string + "#");
             writter.close();
         }
@@ -31,7 +31,7 @@ public class Pesca {
     }
 
     public void borrarUsuario(String usuario) throws IOException {
-        read = new FileReader("C:\\Users\\alumne-DAM\\Desktop\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
         String documento="";
         String string="";
         int valor = read.read();
@@ -62,7 +62,7 @@ public class Pesca {
             string="";
         }
         read.close();
-        writter = new FileWriter("C:\\Users\\alumne-DAM\\Desktop\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+        writter = new FileWriter("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
         writter.write(documento);
         writter.close();
     }
@@ -88,7 +88,7 @@ public class Pesca {
     }
 
     public void leerPesquera() throws IOException {
-        read = new FileReader("C:\\Users\\alumne-DAM\\Desktop\\ejercicio_pesca\\Resource\\Files\\mediterrania.txt");
+        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\mediterrania.txt");
         int valor = read.read();
         boolean separador=true;
         String linea="";
@@ -101,6 +101,7 @@ public class Pesca {
         while (valor!=-1){
             if (valor == '\n' || valor == '\r') {
                 valor = read.read();
+                valor = read.read();
             }
             while (valor!='\n' && valor!='\r' && valor!=-1){
                 while (separador){
@@ -108,40 +109,41 @@ public class Pesca {
                         campo+=(char)valor;
                     } else{
                         separador = false;
+                        contador++;
                     }
                     linea+=(char)valor;
                     valor = read.read();
                 }
                 separador=true;
                 switch (contador){
-                    case 1:
+                    case 2:
                         campo1=campo;
                         break;
-                    case 2:
+                    case 3:
                         campo2=campo;
                         break;
-                    case 3:
+                    case 4:
                         campo3=campo;
                         break;
-                    case 4:
+                    case 5:
                         campo4=campo;
                         break;
                 }
-                System.out.println(campo4);
                 campo="";
-                if (contador==4){
+                if (contador==5){
                     contador=0;
                 }
-                contador++;
+                //contador++;
             }
+            System.out.println(campo4);
+            //System.out.println(linea);
             linea="";
-            System.out.println(linea);
         }
         read.close();
     }
 
     public boolean comprobarUsuario(String stringComprobador) throws IOException {
-        read = new FileReader("C:\\Users\\alumne-DAM\\Desktop\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
         String string="";
         int valor= read.read();
         boolean separator = true;
