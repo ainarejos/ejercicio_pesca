@@ -91,18 +91,22 @@ public class Pesca {
         read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\mediterrania.txt");
         int valor = read.read();
         boolean separador=true;
+        boolean encontrado=true;
         String linea="";
         String campo="";
+        double random= Math.random();
         String campo1="";
-        String campo2="";
-        String campo3="";
-        String campo4="";
+        double campo2=0.00;
+        double campo3=0.00;
+        double campo4=0.00;
         int contador=0;
-        while (valor!=-1){
-            if (valor == '\n' || valor == '\r') {
+
+        while (valor!=-1 && encontrado){
+            if (valor == '\n' || valor == '\r' && encontrado) {
                 valor = read.read();
                 valor = read.read();
             }
+
             while (valor!='\n' && valor!='\r' && valor!=-1){
                 while (separador){
                     if (valor!=35 && valor!=-1){
@@ -120,27 +124,46 @@ public class Pesca {
                         campo1=campo;
                         break;
                     case 3:
-                        campo2=campo;
+                        campo2=Double.parseDouble(campo);
                         break;
                     case 4:
-                        campo3=campo;
+                        campo3=Double.parseDouble(campo);
                         break;
                     case 5:
-                        campo4=campo;
+                        campo4=Double.parseDouble(campo);
                         break;
                 }
                 campo="";
                 if (contador==5){
                     contador=0;
                 }
-                //contador++;
             }
-            System.out.println(campo4);
-            //System.out.println(linea);
+            if (campo2>random){
+                double peso= Math.random()*(campo4-campo3)+campo3;
+                System.out.println("Has pescado: " + campo1 + " con un peso de: " + peso);
+                this.añadirRegistro("Manolo", campo1, peso);
+                encontrado=false;
+            }
             linea="";
         }
         read.close();
     }
+
+    public void añadirRegistro(String usuario, String pez, double peso) throws IOException {
+        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\registres.txt");
+        int valor = read.read();
+        String documento="";
+        while (valor!=-1){
+            documento = documento + (char)valor;
+            valor= read.read();
+        }
+
+        writter = new FileWriter("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\registres.txt");
+        writter.write(documento + "\n#" + usuario + "#" + pez + "#" + peso + "#");
+        writter.close();
+        read.close();
+    }
+
 
     public boolean comprobarUsuario(String stringComprobador) throws IOException {
         read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
