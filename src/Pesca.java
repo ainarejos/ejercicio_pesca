@@ -12,7 +12,7 @@ public class Pesca {
     }
 
     public void write(String string) throws IOException {
-        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+        read = new FileReader("Resource/Files/ejemplo.txt");
         int valor = read.read();
         String documento="";
         while (valor!=-1){
@@ -23,7 +23,7 @@ public class Pesca {
         if (this.comprobarUsuario(string)){
             System.out.println("\nUsuario ya registrado");
         } else {
-            writter = new FileWriter("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+            writter = new FileWriter("Resource/Files/ejemplo.txt");
             writter.write(documento + "\n#" + string + "#");
             writter.close();
         }
@@ -31,7 +31,7 @@ public class Pesca {
     }
 
     public void borrarUsuario(String usuario) throws IOException {
-        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+        read = new FileReader("Resource/Files/ejemplo.txt");
         String documento="";
         String string="";
         int valor = read.read();
@@ -62,7 +62,7 @@ public class Pesca {
             string="";
         }
         read.close();
-        writter = new FileWriter("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+        writter = new FileWriter("Resource/Files/ejemplo.txt");
         writter.write(documento);
         writter.close();
     }
@@ -88,7 +88,7 @@ public class Pesca {
     }
 
     public void leerPesquera() throws IOException {
-        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\mediterrania.txt");
+        read = new FileReader("Resource/Files/mediterrania.txt");
         int valor = read.read();
         boolean separador=true;
         boolean encontrado=true;
@@ -106,7 +106,6 @@ public class Pesca {
                 valor = read.read();
                 valor = read.read();
             }
-
             while (valor!='\n' && valor!='\r' && valor!=-1){
                 while (separador){
                     if (valor!=35 && valor!=-1){
@@ -150,23 +149,30 @@ public class Pesca {
     }
 
     public void añadirRegistro(String usuario, String pez, double peso) throws IOException {
-        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\registres.txt");
+        read = new FileReader("Resource/Files/registres.txt");
         int valor = read.read();
         String documento="";
         while (valor!=-1){
             documento = documento + (char)valor;
             valor= read.read();
         }
-
-        writter = new FileWriter("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\registres.txt");
-        writter.write(documento + "\n#" + usuario + "#" + pez + "#" + peso + "#");
+        writter = new FileWriter("Resource/Files/registres.txt");
+        writter.write(documento + "\n#" + pez + "#" + usuario + "#" + peso + "#");
         writter.close();
         read.close();
     }
 
+    public void estadisticasGlobales() throws IOException {
+        read = new FileReader("Resource/Files/registres.txt");
+        int valor = read.read();
+        while (valor!=-1){
+
+        }
+    }
+
 
     public boolean comprobarUsuario(String stringComprobador) throws IOException {
-        read = new FileReader("C:\\Users\\adani\\IdeaProjects\\ejercicio_pesca\\Resource\\Files\\ejemplo.txt");
+        read = new FileReader("Resource/Files/ejemplo.txt");
         String string="";
         int valor= read.read();
         boolean separator = true;
