@@ -4,8 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Pesca {
-    public static FileReader read;
 
+    public static FileReader read;
     FileWriter writter;
 
     public Pesca() throws IOException {
@@ -24,6 +24,25 @@ public class Pesca {
             System.out.println("\nUsuario ya registrado");
         } else {
             writter = new FileWriter("Resource/Files/ejemplo.txt");
+            writter.write(documento + "\n#" + string + "#");
+            writter.close();
+        }
+        read.close();
+    }
+
+    public void registrarPez(String string) throws IOException {
+        read = new FileReader("Resource/Files/yaregistrados.txt");
+        int valor = read.read();
+        String documento="";
+        while (valor!=-1){
+            documento = documento + (char)valor;
+            valor= read.read();
+        }
+        read.close();
+        if (this.comprobarUsuario(string)){
+            System.out.println("\nUsuario ya registrado");
+        } else {
+            writter = new FileWriter("Resource/Files/yaregistrados.txt");
             writter.write(documento + "\n#" + string + "#");
             writter.close();
         }
@@ -270,6 +289,36 @@ public class Pesca {
 
     public boolean comprobarUsuario(String stringComprobador) throws IOException {
         read = new FileReader("Resource/Files/ejemplo.txt");
+        String string="";
+        int valor= read.read();
+        boolean separator = true;
+        boolean comprobador = false;
+        boolean first=true;
+        while (valor!=-1){
+            while (separator){
+                if (valor!=35 && valor!=-1 || first) {
+                    string = string + (char)valor;
+                    first=false;
+                }else {
+                    separator = false;
+                }
+                valor = read.read();
+            }
+            separator = true;
+            System.out.print(string + " ");
+            if (string.equals(stringComprobador)){
+                comprobador=true;
+            } else {
+
+            }
+            string="";
+        }
+        read.close();
+        return comprobador;
+    }
+
+    public boolean comprobarPez(String stringComprobador) throws IOException {
+        read = new FileReader("Resource/Files/yaregistrados.txt");
         String string="";
         int valor= read.read();
         boolean separator = true;
