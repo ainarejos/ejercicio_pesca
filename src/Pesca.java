@@ -165,9 +165,106 @@ public class Pesca {
     public void estadisticasGlobales() throws IOException {
         read = new FileReader("Resource/Files/registres.txt");
         int valor = read.read();
-        while (valor!=-1){
+        boolean separador=true;
+        boolean encontrado=true;
+        String linea="";
+        String campo="";
+        double random= Math.random();
+        String campo1="";
+        String campo2="";
+        double campo3=0.00;
+        double campo_top=0.00;
+        int contador=0;
 
+        while (valor!=-1){
+            if (valor == '\n' || valor == '\r' && encontrado) {
+                valor = read.read();
+            }
+            while (valor!='\n' && valor!='\r' && valor!=-1){
+                while (separador){
+                    if (valor!=35 && valor!=-1){
+                        campo+=(char)valor;
+                    } else{
+                        separador = false;
+                        contador++;
+                    }
+                    linea+=(char)valor;
+                    valor = read.read();
+                }
+                separador=true;
+                switch (contador){
+                    case 2:
+                        campo1=campo;
+                        break;
+                    case 3:
+                        campo2=campo;
+                        break;
+                    case 4:
+                        campo3=Double.parseDouble(campo);
+                        break;
+                }
+                campo="";
+                if (contador==4){
+                    contador=0;
+                }
+            }
+            // Aqui el segundo reader
+            FileReader read2 = new FileReader("Resource/Files/registres.txt");
+            int valor_2 = read2.read();
+            boolean separador_2=true;
+            boolean encontrado_2=true;
+            String linea_2="";
+            String campo_2="";
+            double random_2= Math.random();
+            String campo1_2="";
+            String campo2_2="";
+            double campo3_2=0.00;
+            int contador_2=0;
+
+            while (valor_2!=-1){
+                if (valor_2 == '\n' || valor_2 == '\r') {
+                    valor_2 = read2.read();
+                }
+                while (valor_2!='\n' && valor_2!='\r' && valor_2!=-1){
+                    while (separador_2){
+                        if (valor_2!=35 && valor_2!=-1){
+                            campo_2+=(char)valor_2;
+                        } else{
+                            separador_2 = false;
+                            contador_2++;
+                        }
+                        linea_2+=(char)valor_2;
+                        valor_2 = read2.read();
+                    }
+                    separador_2=true;
+                    switch (contador_2){
+                        case 2:
+                            campo1_2=campo_2;
+                            break;
+                        case 3:
+                            campo2_2=campo_2;
+                            break;
+                        case 4:
+                            campo3_2=Double.parseDouble(campo_2);
+                            break;
+                    }
+                    campo_2="";
+                    if (contador_2==4){
+                        contador_2=0;
+                    }
+                }
+                // Aqui el segundo reader
+                if (campo1.equals(campo1_2) && campo3_2>campo_top){
+                    campo_top=campo3_2;
+                }
+                linea_2="";
+            }
+            read2.close();
+            System.out.println(campo_top);
+            campo_top=0;
+            linea="";
         }
+        read.close();
     }
 
 
@@ -206,5 +303,6 @@ public class Pesca {
         //p.write("Luis");
         //p.borrarUsuario("Adan");
         p.leerPesquera();
+        p.estadisticasGlobales();
     }
 }
