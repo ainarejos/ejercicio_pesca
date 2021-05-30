@@ -1,18 +1,16 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class Pesca {
 
-    public static FileReader read;
     FileWriter writter;
 
-    public Pesca() throws IOException {
+    public Pesca() {
     }
 
-    public void write(String string) throws IOException {
-        read = new FileReader("Resource/Files/ejemplo.txt");
+    // Pendiente de cambiar.
+    public void registrarUsuario(String string) throws IOException {
+        FileReader read = new FileReader("Resource/Files/usuaris.txt");
         int valor = read.read();
         String documento="";
         while (valor!=-1){
@@ -23,15 +21,17 @@ public class Pesca {
         if (this.comprobarUsuario(string)){
             System.out.println("\nUsuario ya registrado");
         } else {
-            writter = new FileWriter("Resource/Files/ejemplo.txt");
-            writter.write(documento + "\n#" + string + "#");
+            writter = new FileWriter("Resource/Files/usuaris.txt");
+            writter.write(documento + "#" + string + "#\n");
+            System.out.println("Usuario registrado correctamente");
             writter.close();
         }
         read.close();
     }
 
+    // Pendiente de cambio.
     public void registrarPez(String string) throws IOException {
-        read = new FileReader("Resource/Files/yaregistrados.txt");
+        FileReader read = new FileReader("Resource/Files/yaregistrados.txt");
         int valor = read.read();
         String documento="";
         while (valor!=-1){
@@ -43,28 +43,26 @@ public class Pesca {
             System.out.println("\nUsuario ya registrado");
         } else {
             writter = new FileWriter("Resource/Files/yaregistrados.txt");
-            writter.write(documento + "\n#" + string + "#");
+            writter.write(documento + "#" + string + "#\n");
             writter.close();
         }
         read.close();
     }
 
+    // Pendiente de cambiar
     public void borrarUsuario(String usuario) throws IOException {
-        read = new FileReader("Resource/Files/ejemplo.txt");
+        FileReader read = new FileReader("Resource/Files/usuaris.txt");
         String documento="";
         String string="";
         int valor = read.read();
-        boolean separator = true;
-        boolean comprobador = false;
         boolean firts= true;
         while (valor!=-1){
             while (valor!='\n' && valor!=-1){
-                if (valor!=35 && valor!=-1 || firts==true){
+                if (valor!=35 && valor!=-1 || firts){
                     string = string + (char)valor;
                     firts=false;
                 } else {
                     string = string + (char)valor;
-                    separator = false;
                 }
                 valor = read.read();
             }
@@ -72,7 +70,6 @@ public class Pesca {
                 string = string + (char)valor;
                 valor = read.read();
             }
-            separator = true;
             if (string.equals( '#' + usuario + '#' + '\n') || (string.equals( '#' + usuario + '#' + '\r' + "\n") ||(string.equals( '#' + usuario + '#')))){
 
             } else {
@@ -81,33 +78,14 @@ public class Pesca {
             string="";
         }
         read.close();
-        writter = new FileWriter("Resource/Files/ejemplo.txt");
+        FileWriter writter = new FileWriter("Resource/Files/usuaris.txt");
         writter.write(documento);
         writter.close();
     }
 
-    public void read() throws IOException {
-        String string="";
-        int valor= read.read();
-        boolean separator = true;
-        while (valor!=-1){
-            while (separator){
-                if (valor!=35 && valor!=-1) {
-                    string= string + (char)valor;
-                }else {
-                    separator = false;
-                }
-                valor = read.read();
-            }
-            separator = true;
-            System.out.print(string + " ");
-            string="";
-        }
-        read.close();
-    }
-
-    public void leerPesquera() throws IOException {
-        read = new FileReader("Resource/Files/mediterrania.txt");
+    // Pendiete de optimizar.
+    public void Pescar(String usuario, String path) throws IOException {
+        FileReader read = new FileReader(path);
         int valor = read.read();
         boolean separador=true;
         boolean encontrado=true;
@@ -158,8 +136,8 @@ public class Pesca {
             }
             if (campo2>random){
                 double peso= Math.random()*(campo4-campo3)+campo3;
-                System.out.println("Has pescado: " + campo1 + " con un peso de: " + peso);
-                this.añadirRegistro("Manolo", campo1, peso);
+                System.out.println(usuario + " ha pescado: " + campo1 + " con un peso de: " + peso);
+                this.añadirRegistro(usuario, campo1, peso);
                 encontrado=false;
             }
             linea="";
@@ -167,8 +145,9 @@ public class Pesca {
         read.close();
     }
 
+    // Pendiente de cambiar.
     public void añadirRegistro(String usuario, String pez, double peso) throws IOException {
-        read = new FileReader("Resource/Files/registres.txt");
+        FileReader read = new FileReader("Resource/Files/registres.txt");
         int valor = read.read();
         String documento="";
         while (valor!=-1){
@@ -176,13 +155,13 @@ public class Pesca {
             valor= read.read();
         }
         writter = new FileWriter("Resource/Files/registres.txt");
-        writter.write(documento + "\n#" + pez + "#" + usuario + "#" + peso + "#");
+        writter.write(documento + "#" + pez + "#" + usuario + "#" + peso + "#\n");
         writter.close();
         read.close();
     }
 
-    public void estadisticasGlobales() throws IOException {
-        read = new FileReader("Resource/Files/registres.txt");
+    public void estadisticasGlobales(String usuario) throws IOException {
+        FileReader read = new FileReader("Resource/Files/registres.txt");
         int valor = read.read();
         boolean separador=true;
         boolean encontrado=true;
@@ -227,68 +206,74 @@ public class Pesca {
                     contador=0;
                 }
             }
-            // Aqui el segundo reader
-            FileReader read2 = new FileReader("Resource/Files/registres.txt");
-            int valor_2 = read2.read();
-            boolean separador_2=true;
-            boolean encontrado_2=true;
-            String linea_2="";
-            String campo_2="";
-            double random_2= Math.random();
-            String campo1_2="";
-            String campo2_2="";
-            double campo3_2=0.00;
-            int contador_2=0;
-
-            while (valor_2!=-1){
-                if (valor_2 == '\n' || valor_2 == '\r') {
-                    valor_2 = read2.read();
-                }
-                while (valor_2!='\n' && valor_2!='\r' && valor_2!=-1){
-                    while (separador_2){
-                        if (valor_2!=35 && valor_2!=-1){
-                            campo_2+=(char)valor_2;
-                        } else{
-                            separador_2 = false;
-                            contador_2++;
-                        }
-                        linea_2+=(char)valor_2;
+            if (this.comprobarPez(campo1)){
+            } else {
+                FileReader read2 = new FileReader("Resource/Files/registres.txt");
+                int valor_2 = read2.read();
+                boolean separador_2=true;
+                boolean encontrado_2=true;
+                String linea_2="";
+                String campo_2="";
+                double random_2= Math.random();
+                String campo1_2="";
+                String campo2_2="";
+                double campo3_2=0.00;
+                int contador_2=0;
+                while (valor_2!=-1){
+                    if (valor_2 == '\n' || valor_2 == '\r') {
                         valor_2 = read2.read();
                     }
-                    separador_2=true;
-                    switch (contador_2){
-                        case 2:
-                            campo1_2=campo_2;
-                            break;
-                        case 3:
-                            campo2_2=campo_2;
-                            break;
-                        case 4:
-                            campo3_2=Double.parseDouble(campo_2);
-                            break;
+                    while (valor_2!='\n' && valor_2!='\r' && valor_2!=-1){
+                        while (separador_2){
+                            if (valor_2!=35 && valor_2!=-1){
+                                campo_2+=(char)valor_2;
+                            } else{
+                                separador_2 = false;
+                                contador_2++;
+                            }
+                            linea_2+=(char)valor_2;
+                            valor_2 = read2.read();
+                        }
+                        separador_2=true;
+                        switch (contador_2){
+                            case 2:
+                                campo1_2=campo_2;
+                                break;
+                            case 3:
+                                campo2_2=campo_2;
+                                break;
+                            case 4:
+                                campo3_2=Double.parseDouble(campo_2);
+                                break;
+                        }
+                        campo_2="";
+                        if (contador_2==4){
+                            contador_2=0;
+                        }
                     }
-                    campo_2="";
-                    if (contador_2==4){
-                        contador_2=0;
+                    if (campo1.equals(campo1_2) && campo3_2>campo_top){
+                        campo_top=campo3_2;
                     }
+                    linea_2="";
                 }
-                // Aqui el segundo reader
-                if (campo1.equals(campo1_2) && campo3_2>campo_top){
-                    campo_top=campo3_2;
+                read2.close();
+                this.registrarPez(campo1);
+                if (usuario==null){
+                    System.out.println("Pez:" + campo1 + " peso: " +  campo_top + " pescado por " + campo2);
+                } else if (campo2.equals(usuario)){
+                    System.out.println("Pez:" + campo1 + " peso: " +  campo_top + " pescado por " + campo2);
+                } else {
                 }
-                linea_2="";
             }
-            read2.close();
-            System.out.println(campo_top);
             campo_top=0;
             linea="";
         }
+        FileWriter borrar = new FileWriter("Resource/Files/yaregistrados.txt");
         read.close();
     }
-
 
     public boolean comprobarUsuario(String stringComprobador) throws IOException {
-        read = new FileReader("Resource/Files/ejemplo.txt");
+        FileReader read = new FileReader("Resource/Files/usuaris.txt");
         String string="";
         int valor= read.read();
         boolean separator = true;
@@ -305,7 +290,6 @@ public class Pesca {
                 valor = read.read();
             }
             separator = true;
-            System.out.print(string + " ");
             if (string.equals(stringComprobador)){
                 comprobador=true;
             } else {
@@ -317,8 +301,9 @@ public class Pesca {
         return comprobador;
     }
 
+
     public boolean comprobarPez(String stringComprobador) throws IOException {
-        read = new FileReader("Resource/Files/yaregistrados.txt");
+        FileReader read = new FileReader("Resource/Files/yaregistrados.txt");
         String string="";
         int valor= read.read();
         boolean separator = true;
@@ -326,7 +311,7 @@ public class Pesca {
         boolean first=true;
         while (valor!=-1){
             while (separator){
-                if (valor!=35 && valor!=-1 || first) {
+                if (valor!=35 && valor!=-1) {
                     string = string + (char)valor;
                     first=false;
                 }else {
@@ -335,23 +320,95 @@ public class Pesca {
                 valor = read.read();
             }
             separator = true;
-            System.out.print(string + " ");
             if (string.equals(stringComprobador)){
                 comprobador=true;
             } else {
-
             }
             string="";
         }
         read.close();
         return comprobador;
+    }
+
+    public void menu() throws IOException {
+        Scanner sc = new Scanner(System.in);
+        Scanner sc2 = new Scanner(System.in);
+        String usuario;
+        System.out.println("##########################\n#        Pesca           #\n##########################\n" +
+                "1 - Alta d'usuari\n2 - Baixa d'usuari\n3 - Pescar en una pesquera\n4 - Estadistiques per usuari\n" +
+                "5 - Estedistiques globals\n6 - Sortir del programa\n##########################\nElije una opcion: ");
+        int opcion = sc.nextInt();
+        switch (opcion){
+            case 1:
+                System.out.println("Introuzca el nombre del usuario: ");
+                usuario = sc2.nextLine();
+                this.registrarUsuario(usuario);
+                this.menu();
+                break;
+            case 2:
+                System.out.println("Introuzca el nombre del usuario: ");
+                usuario = sc2.nextLine();
+                this.borrarUsuario(usuario);
+                this.menu();
+                break;
+            case 3:
+                System.out.println("Introuzca el nombre del usuario: ");
+                usuario = sc2.nextLine();
+                if (comprobarUsuario(usuario)){
+                    this.subMenu(usuario);
+                } else {
+                    System.out.println("Usuario no registrado");
+                }
+                this.menu();
+                break;
+            case 4:
+                System.out.println("Introuzca el nombre del usuario: ");
+                usuario = sc2.nextLine();
+                this.estadisticasGlobales(usuario);
+                this.menu();
+                break;
+            case 5:
+                this.estadisticasGlobales(null);
+                this.menu();
+                break;
+            case 6:
+                System.out.println("Cerrando el programa");
+                break;
+            default:
+                System.out.println("Elija una opcion valida");
+                this.menu();
+        }
+    }
+
+    public void subMenu(String usuario) throws IOException {
+        String pathMediterranio = "Resource/Files/mediterrania.txt";
+        String pathFlorida = "Resource/Files/florida.txt";
+        Scanner sc = new Scanner(System.in);
+        int opcion;
+        System.out.println("1 - Pescar en el mediterranio\n2 - Pescar en florida\n3 - Volver al menu\n" +
+                "--------------------\nElije una zona donde pescar:");
+        opcion = sc.nextInt();
+        switch (opcion){
+            case 1:
+                this.Pescar(usuario, pathMediterranio);
+                this.menu();
+                break;
+            case 2:
+                this.Pescar(usuario, pathFlorida);
+                this.menu();
+                break;
+            case 3:
+                System.out.println("Volviendo al menu");
+                this.menu();
+            default:
+                System.out.println("Introduzca una opcion correcta");
+                this.subMenu(usuario);
+                break;
+        }
     }
 
     public static void main(String[] args) throws IOException {
         Pesca p = new Pesca();
-        //p.write("Luis");
-        //p.borrarUsuario("Adan");
-        p.leerPesquera();
-        p.estadisticasGlobales();
+        p.menu();
     }
 }
